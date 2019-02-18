@@ -3,6 +3,7 @@ var axios = require("axios");
 var moment = require('moment');
 var keys = require("./keys.js");
 var Spotify = require('node-spotify-api');
+var fs = require('fs')
 
 var spotify = new Spotify(keys.spotify);
 
@@ -21,7 +22,7 @@ var input = rawInput.join(' ')
 function OMDB(input) {
     axios.get("http://www.omdbapi.com/?t=" + input + "&apikey=trilogy")
     .then(function (response) {
-            // Then we print out the imdbRating
+            
             console.log(response.data.Title);
             console.log(response.data.Year);
             console.log(response.data.imdbRating);
@@ -42,8 +43,10 @@ function BandsInTown(input) {
         for(var i = 0; i < response.data.length; i++) {
             console.log(response.data[i].venue.name)
             console.log(response.data[i].venue.city + ', ' + response.data[i].venue.country)
-            console.log(response.data[i].datetime)
+            var date = response.data[i].datetime;
+            console.log(moment(date).format('MM-DD-YYYY'))
             console.log('-----------------')
+            console.log(input)
 
         }
 
@@ -68,7 +71,30 @@ function spotifySong(input) {
      
       });
 
+};
+
+//-----------FileSystem----------//
+//-----------FileSystem----------//
+function fileSystem() {
+    fs.readFile('./random.txt','utf8', (err, data) => {
+        if (err) throw err;
+        
+        var newData = data.split(',')
+
+
+        if (newData[0] === 'concert-this') {
+            BandsInTown(newData[1])
+        } else if (newData[0] === 'spotify-this-song') {
+            spotifySong(newData[1])
+        } else if (newData[0] === 'movie-this') {
+            OMDB(newData[1])
+        } else {
+            console.log('Make sure you have everything formatted correctly')
+        }
+       
+      });
 }
+
 
 //-----------If/Else Statements----------//
 //-----------If/Else Statements----------//
@@ -104,7 +130,8 @@ if (action === 'concert-this') {
     }
 
 } else if (action === 'do-what-it-says') {
-
+    
+    fileSystem();
 
 }
 
