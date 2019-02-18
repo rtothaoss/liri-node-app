@@ -1,6 +1,10 @@
-// require("dotenv").config();
+require("dotenv").config();
 var axios = require("axios");
-// var keys = require("./keys.js");
+var moment = require('moment');
+var keys = require("./keys.js");
+var Spotify = require('node-spotify-api');
+
+var spotify = new Spotify(keys.spotify);
 
 
 var action = process.argv[2];
@@ -42,12 +46,29 @@ function BandsInTown(input) {
             console.log('-----------------')
 
         }
-        // console.log(response.data[0].venue.name)
+
     })
 }
 
+//-----------Spotify----------//
+//-----------Spotify----------//
+function spotifySong(input) {
+    spotify.search({ type: 'track', query: input, limit: 5 }, function(err, data) {
+        if (err) {
+          return console.log('Error occurred: ' + err);
+        }
 
+        for(var x = 0; x < data.tracks.items.length; x++) {
+            console.log(data.tracks.items[x].album.artists[0].name); 
+            console.log(data.tracks.items[x].name); 
+            console.log(data.tracks.items[x].preview_url); 
+            console.log(data.tracks.items[x].album.name);
+            console.log('-----------------') 
+        }
+     
+      });
 
+}
 
 //-----------If/Else Statements----------//
 //-----------If/Else Statements----------//
@@ -63,8 +84,13 @@ if (action === 'concert-this') {
 
 } else if (action === 'spotify-this-song') {
 
+        if (input.length === 0) {
 
-
+            spotifySong('Self Care')
+        } else {
+            
+            spotifySong(input)
+        }
 
 
 } else if (action === 'movie-this') {
@@ -81,4 +107,8 @@ if (action === 'concert-this') {
 
 
 }
+
+
+
+
 
