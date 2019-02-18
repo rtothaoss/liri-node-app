@@ -5,17 +5,18 @@ var axios = require("axios");
 
 var action = process.argv[2];
 
-var input = process.argv.slice(3)
+var rawInput = process.argv.slice(3)
 
-console.log(input)
+var input = rawInput.join(' ')
+
 
 
 
 //-----------OMDB----------//
 //-----------OMDB----------//
 function OMDB(input) {
-    axios.get("http://www.omdbapi.com/?t=" + input + "&apikey=trilogy").then(
-        function (response) {
+    axios.get("http://www.omdbapi.com/?t=" + input + "&apikey=trilogy")
+    .then(function (response) {
             // Then we print out the imdbRating
             console.log(response.data.Title);
             console.log(response.data.Year);
@@ -29,22 +30,53 @@ function OMDB(input) {
     );
 };
 
-if (action === 'concert-this') {
+//-----------BandsInTown----------//
+//-----------BandsInTown----------//
+function BandsInTown(input) {
+    axios.get("https://rest.bandsintown.com/artists/" + input + "/events?app_id=codingbootcamp")
+    .then(function(response){
+        for(var i = 0; i < response.data.length; i++) {
+            console.log(response.data[i].venue.name)
+            console.log(response.data[i].venue.city + ', ' + response.data[i].venue.country)
+            console.log(response.data[i].datetime)
+            console.log('-----------------')
 
+        }
+        // console.log(response.data[0].venue.name)
+    })
+}
+
+
+
+
+//-----------If/Else Statements----------//
+//-----------If/Else Statements----------//
+if (action === 'concert-this') {
+    
+    if (input.length === 0) {
+
+        BandsInTown('Sylvan Esso');
+    } else {
+
+        BandsInTown(input);
+    }
 
 } else if (action === 'spotify-this-song') {
 
 
+
+
+
 } else if (action === 'movie-this') {
-    
+
     if (input.length === 0) {
- 
+
         OMDB('Mr Nobody');
     } else {
 
         OMDB(input);
     }
-  
+
 } else if (action === 'do-what-it-says') {
 
 
