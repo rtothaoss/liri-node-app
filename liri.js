@@ -17,6 +17,7 @@ var input = rawInput.join(' ')
 
 
 
+
 //-----------OMDB----------//
 //-----------OMDB----------//
 function OMDB(input) {
@@ -83,7 +84,7 @@ function fileSystem() {
 
 
         if (newData[0] === 'concert-this') {
-            BandsInTown(newData[1])
+            BandsInTown(newData[1].replace(/['"]+/g, ''));
         } else if (newData[0] === 'spotify-this-song') {
             spotifySong(newData[1])
         } else if (newData[0] === 'movie-this') {
