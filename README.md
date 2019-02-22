@@ -24,3 +24,7 @@ _node.js CLI that takes in parameters and gives you back data._
 **'movie-this'** - running this command with a movie title after it will give you quite a bit of information about a movie. The information includes title, release year, IMDB rating, country of origin, language, a short plot, and the main actors.
 
 **'do-what-it-says'** - this will run the commands listed above but in the random.txt file. 
+
+### Video Walkthrough:
+
+https://www.dropbox.com/s/ubyu7ehnypi14j1/LIRIapp-RossCarmack.mov?dl=0
