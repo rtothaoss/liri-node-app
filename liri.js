@@ -109,6 +109,8 @@ function fileSystem() {
        
       });
 }
+//-----------Append File----------//
+//-----------Append File----------//
 
 function append(showData) {
     fs.appendFile("log.txt", showData + divider, function(err) {
