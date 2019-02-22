@@ -5,8 +5,9 @@ var keys = require("./keys.js");
 var Spotify = require('node-spotify-api');
 var fs = require('fs')
 
-var spotify = new Spotify(keys.spotify);
 
+
+var spotify = new Spotify(keys.spotify);
 
 var action = process.argv[2];
 
@@ -134,6 +135,9 @@ if (action === 'concert-this') {
     
     fileSystem();
 
+} else {
+    
+    console.log('Type in a command like "concert-this" followed by a band name.')
 }
 
 
