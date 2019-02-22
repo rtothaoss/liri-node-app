@@ -15,6 +15,7 @@ var rawInput = process.argv.slice(3)
 
 var input = rawInput.join(' ')
 
+var divider = "\n------------------------------------------------------------\n\n";
 
 
 
@@ -24,15 +25,19 @@ var input = rawInput.join(' ')
 function OMDB(input) {
     axios.get("http://www.omdbapi.com/?t=" + input + "&apikey=trilogy")
     .then(function (response) {
+
+            var showData = [response.data.Title,
+                            response.data.Year,
+                            response.data.imdbRating,
+                            response.data.Ratings[1].Source + ': ' + response.data.Ratings[1].Value,
+                            response.data.Country,
+                            response.data.Language,
+                            response.data.Plot,
+                            response.data.Actors].join('\n\n');
+
+            console.log(showData)
             
-            console.log(response.data.Title);
-            console.log(response.data.Year);
-            console.log(response.data.imdbRating);
-            console.log(response.data.Ratings[1]);
-            console.log(response.data.Country);
-            console.log(response.data.Language);
-            console.log(response.data.Plot);
-            console.log(response.data.Actors);
+            append(showData)
         }
     );
 };
@@ -43,13 +48,16 @@ function BandsInTown(input) {
     axios.get("https://rest.bandsintown.com/artists/" + input + "/events?app_id=codingbootcamp")
     .then(function(response){
         for(var i = 0; i < response.data.length; i++) {
-            console.log(response.data[i].venue.name)
-            console.log(response.data[i].venue.city + ', ' + response.data[i].venue.country)
-            var date = response.data[i].datetime;
-            console.log(moment(date).format('MM-DD-YYYY'))
-            console.log('-----------------')
-            console.log(input)
 
+            var date = response.data[i].datetime
+
+            var showData = [response.data[i].venue.name,
+                            response.data[i].venue.city + ', ' + response.data[i].venue.country,
+                            moment(date).format('MM-DD-YYYY'),
+                            '-----------------'].join('\n\n')
+                            
+                            console.log(showData)
+            append(showData)
         }
 
     })
@@ -64,11 +72,16 @@ function spotifySong(input) {
         }
 
         for(var x = 0; x < data.tracks.items.length; x++) {
-            console.log(data.tracks.items[x].album.artists[0].name); 
-            console.log(data.tracks.items[x].name); 
-            console.log(data.tracks.items[x].preview_url); 
-            console.log(data.tracks.items[x].album.name);
-            console.log('-----------------') 
+
+            var showData = [data.tracks.items[x].album.artists[0].name,
+                            data.tracks.items[x].name,
+                            data.tracks.items[x].preview_url,
+                            data.tracks.items[x].album.name,
+                            '-----------------'].join('\n\n')
+
+            console.log(showData)
+
+            append(showData)
         }
      
       });
@@ -93,6 +106,13 @@ function fileSystem() {
         } else {
             console.log('Make sure you have everything formatted correctly')
         }
+       
+      });
+}
+
+function append(showData) {
+    fs.appendFile("log.txt", showData + divider, function(err) {
+        if (err) throw err;
        
       });
 }
